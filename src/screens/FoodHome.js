@@ -66,7 +66,7 @@ const Home = ({ navigation }) => {
                         <Text style={{ fontSize: 30, fontWeight: 'bold', color: COLORS.primary }}>Food</Text>
                     </View>
                 </View>
-                <Icon name='person-outline' size={38} color={COLORS.grey} />
+                <Icon name='person-outline' size={38} color={COLORS.grey} onPress={()=>navigation.navigate('OrderedPage')} />
             </View>
             <View style={style.searchInputContainer}>
                 <Icon name='search' size={25} style={{ marginLeft: 20 }} />
@@ -88,9 +88,6 @@ const Home = ({ navigation }) => {
                 <ScrollView showsHorizontalScrollIndicator={false}>
                     <FoodCard navigation={navigation} />
                     <TopFoodCard navigation={navigation} />
-                    <HomeCompo navigation={navigation} />
-                    <HotelHomeCompo navigation={navigation}/>
-                    <DestinationHomeCompo navigation={navigation}/>
                 </ScrollView>
             )
             }

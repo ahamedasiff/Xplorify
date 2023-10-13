@@ -21,7 +21,7 @@ function HotelBookingList({ navigation }) {
 
   const deleteBooking = (id) => {
     // Make an HTTP DELETE request to delete the booking by ID
-    axios.delete(`http://10.0.2.2:3000/hotel/${id}`)
+    axios.delete(`http://192.168.205.78:3000/hotel/${id}`)
       .then(response => {
         // Handle success, such as updating the local state or re-fetching data
         console.log('Booking deleted successfully');

@@ -22,7 +22,7 @@ const HotelHomeCompo = ({ navigation }) => {
     const Tophotel = ({ hotel }) => {
         return (
             <TouchableOpacity
-                onPress={() => navigation.navigate('FoodDetails', hotel)}>
+                onPress={() => navigation.navigate('HotelHome', hotel)}>
                 <View style={style.tophotelCard}>
                     <Image style={style.tophotelCardImage} source={hotel.image} />
                     <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
@@ -41,7 +41,7 @@ const HotelHomeCompo = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
                     <Text style={{ fontWeight: 'bold', color: COLORS.grey, }}>Hotels</Text>
                     <TouchableOpacity
-                     onPress={() => navigation.navigate('HotelHome')}>
+                     onPress={() => navigation.navigate('FoodHome')}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                             <Text style={{ fontWeight: 'bold', color: COLORS.grey, paddingRight: 10 }}>See All</Text>
                             <Icon name="arrow-forward-ios" size={15} color="#908e8c" />

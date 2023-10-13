@@ -12,7 +12,8 @@ import axios from 'axios';
 
 const HotelBooking = ({ route, navigation }) => {
   const hotel = route.params.hotel;
-  const booking = route.params.booking; // Passed booking data from the list
+  const booking = route.params.booking; 
+  // Passed booking data from the list
 
   const isUpdate = !!booking; // Determine if it's an update or create
 
@@ -229,7 +230,7 @@ const HotelBooking = ({ route, navigation }) => {
     if (booking) {
       // If the 'booking' prop exists, it's an update
       try {
-        await axios.put(`http://10.0.2.2:3000/hotel/${booking._id}`, newBookingDetails);
+        await axios.put(`http://192.168.205.78:3000/hotel/${booking._id}`, newBookingDetails);
         console.log('Booking successfully updated');
         setSuccessMessage('Booking successfully updated!');
         setIsModalVisible(true);
@@ -239,7 +240,7 @@ const HotelBooking = ({ route, navigation }) => {
     } else {
       // If 'booking' prop doesn't exist, it's a new booking
       try {
-        await axios.post('http://10.0.2.2:3000/hotel', newBookingDetails);
+        await axios.post('http://192.168.205.78:3000/hotel', newBookingDetails);
         console.log('Booking successfully created');
         setSuccessMessage('Booking successfully added!');
         setIsModalVisible(true);

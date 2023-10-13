@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors';
 import foods from '../consts/foods';
 import LessSpicy from '../consts/LessSpicy';
-import FoodCard from './FoodCard';
+import searchFoods from '../consts/searchFood';
 
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;
@@ -46,7 +46,7 @@ const TopFoodCard = ({ navigation }) => {
                     <Text style={{ fontWeight: 'bold', color: COLORS.grey }}>Populer</Text>
                 </View>
                 <FlatList
-                    data={foods}
+                    data={searchFoods.slice(0,4)}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{
@@ -60,7 +60,7 @@ const TopFoodCard = ({ navigation }) => {
                     <Text style={{ fontWeight: 'bold', color: COLORS.grey }}>Less Spicy</Text>
                 </View>
                 <FlatList
-                    data={LessSpicy}
+                    data={searchFoods.slice(4,8)}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{

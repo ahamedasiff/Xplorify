@@ -3,47 +3,61 @@ import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity 
 import COLORS from '../consts/colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import searchFoods from '../consts/searchFood';
 
-const Booking = ({ navigation, route }) => {
+const UpdateOrder = (props) => {
+  let url;
+  let price;
+  const item = props.route.params;
+  const key = item._id
+  const navigation = useNavigation();
 
-  const food = route.params.food;
+  searchFoods.map((item1) => {
+    if (item.name === item1.name) {
+        url = item1.image;
+        price = item1.price;
+    }
+});
 
-  const [name, setName] = useState(food.name);
-  const [price, setPrice] = useState(food.price);
-  const [contact, setContact] = useState();
-  const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(1);
-  const [note, setNote] = useState();
+  const [name, setName] = useState(item.name);
+  const [contact, setContact] = useState(item.contact);
+  const [quantity, setQuantity] = useState(item.quantity);
+  const [total, setTotal] = useState(item.total);
+  const [note, setNote] = useState(item.note);
 
   const [contactError, setContactError] = useState();
   const [noteError, setNoteError] = useState();
 
-
-  const sendData = async () => {
-    const newOrder = {
-      name,
-      contact,
-      quantity,
-      total,
-      note
+  useEffect(() => {
+    if (price && quantity) {
+      const newTotal = parseFloat(price) * parseInt(quantity); // Convert to numbers
+      setTotal(newTotal);
     }
+    // else { setTotal(food.price) }
+  }, [price, quantity]);
 
-    await axios.post("http://192.168.205.78:3000/restaurant", newOrder)
-      .then((response) => {
-        console.log('Server Response orderd Successfully:', response.data);
-        // alert("orderd Successfully");
+  const updatedOrder = {
+    name,contact, quantity, total, note
+}
+
+const updateData = async (id) => {
+    await axios.put(`http://192.168.205.78:3000/restaurant/${id}`, updatedOrder)
+    .then(() => {       
+        // Alert.alert("Package Details Updated Successfully")    
+        console.log("Package Details Updated")
         // setName('');
         setContact('');
-        setQuantity(0);
-        setTotal(price);
+        // setQuantity('');
+        // setTotal('');
         setNote('');
-      })
-      .catch((error) => {
-        // alert("Oreder Error")
-        console.error('Oreder Error:', error);
-      });
-  }
-
+    })
+    .catch((err) => {
+        // Alert.alert("Error occurred while updating the details")
+        console.error('Error:Error occurred while updating the details', err);
+    })
+} 
+  
 
   // validation for phone number
   const validateContact = () => {
@@ -67,7 +81,7 @@ const Booking = ({ navigation, route }) => {
     }
   };
 
-  const handleOrderNow = () => {
+  const handleUpdate = () => {
     validateContact();
     validateNote();
     console.log('contactError:', { contactError });
@@ -76,7 +90,8 @@ const Booking = ({ navigation, route }) => {
     //   setModalVisible(true); // Only set isModalVisible to true when there are no validation errors
     // }
     if (contactError === '' && noteError === '') {
-      sendData();
+        updateData(key)
+    //   sendData();
       // setModalVisible(true);
       navigation.navigate('OrderedPage')
     }
@@ -85,79 +100,7 @@ const Booking = ({ navigation, route }) => {
   };
 
 
-//   const print = async () => {
-//     // On iOS/android prints the given html. On web prints the HTML from the current page.
-//     await Print.printAsync({
-//       html,
-//       // iOS only
-//     });
-//   };
 
-//   const printToFile = async () => {
-//     // On iOS/android prints the given html. On web prints the HTML from the current page.
-//     const { uri } = await Print.printToFileAsync({ html });
-//     console.log('File has been saved to:', uri);
-//     await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-//   };
-//   const html = `
-// <html>
-//   <head>
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-//     <style>
-//   table {
-//     border-collapse: collapse;
-//     width: 100%;
-//   }
-
-//   th, td {
-//     border: 1px solid #dddddd;
-//     text-align: left;
-//     padding: 8px;
-//   }
-
-//   tr:nth-child(even) {
-//     background-color: #f2f2f2;
-//   }
-// </style>
-//   </head>
-//   <body style="text-align: center;">
-//     <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-//     Xplorify : Food Pre Order Details</br> 
-//     </h1>
-//     <img  src="${food.image}" alt="A beautiful landscape" width="400" height="300" />
-
-//     <table>
-//       <tr>
-//         <th>Food Name</th>
-//         <th>Quantity</th>
-//         <th>Per Price</th>
-//         <th>Total Price</th>
-//         <th>Contact Number</th>
-//         <th>Special Note</th>
-//       </tr>
-//       <tr>
-//         <td>${name}</td>
-//         <td>${quantity}</td>
-//         <td>${price}</td>
-//         <td>${total}</td>
-//         <td>${contact}</td>
-//         <td>${note}</td>
-//       </tr>
-      
-//       <!-- Add more rows here for additional items <span style="color:red;">ID : 012231</span> -->
-//     </table>
-   
-   
-//   </body>
-// </html>`;
-
-
-
-
-  // const handleClose = () => {
-  //   navigation.navigate('FoodHome');
-  //   setModalVisible(false);
-  // };
   const increase = () => {
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
@@ -171,21 +114,15 @@ const Booking = ({ navigation, route }) => {
   };
 
 
-  useEffect(() => {
-    if (food.price && quantity) {
-      const newTotal = parseFloat(food.price) * parseInt(quantity); // Convert to numbers
-      setTotal(newTotal);
-    }
-    // else { setTotal(food.price) }
-  }, [food.price, quantity]);
+  
 
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Order Details</Text>
+      <Text style={styles.heading}>Edit Details</Text>
       <ScrollView>
         <View style={{ marginVertical: 20 }} >
-          <Image source={food.image} style={styles.topFoodCardImage} />
+          <Image source={url && url.uri ? { uri: url.uri } : null} style={styles.topFoodCardImage} />
         </View>
         <Text style={styles.foodDetails}>Food Name: {name}</Text>
         <Text style={styles.foodDetails}>Price: {total}</Text>
@@ -197,7 +134,7 @@ const Booking = ({ navigation, route }) => {
         <TextInput
           style={[styles.input, { textAlignVertical: 'center' }]}
           placeholder=" Enter Contact Number"
-          value={contact}
+          value={contact.toString()}
           onChangeText={(value) => setContact(value)}
           keyboardType={'phone-pad'}
           onBlur={validateContact}
@@ -208,7 +145,7 @@ const Booking = ({ navigation, route }) => {
           placeholder=" Add an order note"
           value={note}
           autoCapitalize="sentences"
-          autoCorrect={false}
+          autoCorrect={true}
           multiline={true}
           numberOfLines={4}
           maxLength={250}
@@ -225,8 +162,8 @@ const Booking = ({ navigation, route }) => {
           </View>
         </View>
         {/* <Button title="Order Now" onPress={() => handleOrderNow()} /> */}
-        <TouchableOpacity onPress={() => {handleOrderNow();}} style={styles.btn}>
-          <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: 'bold' }}>Order Now</Text>
+        <TouchableOpacity onPress={() => {handleUpdate();}} style={styles.btn}>
+          <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: 'bold' }}>UPDATE ORDER</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -304,4 +241,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Booking;
+export default UpdateOrder;
