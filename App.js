@@ -16,6 +16,7 @@ import HotelBooking from './src/screens/HotelBooking';
 import HotelBookingList from './src/screens/HotelBookingList';
 import OrederedPage from './src/screens/OrderedPage';
 import UpdateOrder from './src/screens/UpdateOrder';
+import UserMap from './src/screens/UserMap';
 import UpdateHotelBooking from './src/screens/UpdateHotelBooking';
 const Stack = createStackNavigator();
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
         <Stack.Screen name="BookingScreen" component={BookingScreen} />
         <Stack.Screen name='OrderedPage'component={OrederedPage} />
         <Stack.Screen name='UpdateOrder' component={UpdateOrder}/>
+        <Stack.Screen name='UserMap' component={UserMap}/>
         <Stack.Screen name="HotelHome" component={HotelHome} />
         <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
         <Stack.Screen name="Rooms" component={Rooms} />

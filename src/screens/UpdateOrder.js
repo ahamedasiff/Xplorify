@@ -93,7 +93,7 @@ const updateData = async (id) => {
         updateData(key)
     //   sendData();
       // setModalVisible(true);
-      navigation.navigate('OrderedPage')
+      navigation.navigate('FoodHome')
     }
 
 

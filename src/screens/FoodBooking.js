@@ -78,86 +78,14 @@ const Booking = ({ navigation, route }) => {
     if (contactError === '' && noteError === '') {
       sendData();
       // setModalVisible(true);
-      navigation.navigate('OrderedPage')
+      navigation.navigate('FoodHome')
     }
 
 
   };
 
 
-//   const print = async () => {
-//     // On iOS/android prints the given html. On web prints the HTML from the current page.
-//     await Print.printAsync({
-//       html,
-//       // iOS only
-//     });
-//   };
 
-//   const printToFile = async () => {
-//     // On iOS/android prints the given html. On web prints the HTML from the current page.
-//     const { uri } = await Print.printToFileAsync({ html });
-//     console.log('File has been saved to:', uri);
-//     await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-//   };
-//   const html = `
-// <html>
-//   <head>
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-//     <style>
-//   table {
-//     border-collapse: collapse;
-//     width: 100%;
-//   }
-
-//   th, td {
-//     border: 1px solid #dddddd;
-//     text-align: left;
-//     padding: 8px;
-//   }
-
-//   tr:nth-child(even) {
-//     background-color: #f2f2f2;
-//   }
-// </style>
-//   </head>
-//   <body style="text-align: center;">
-//     <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-//     Xplorify : Food Pre Order Details</br> 
-//     </h1>
-//     <img  src="${food.image}" alt="A beautiful landscape" width="400" height="300" />
-
-//     <table>
-//       <tr>
-//         <th>Food Name</th>
-//         <th>Quantity</th>
-//         <th>Per Price</th>
-//         <th>Total Price</th>
-//         <th>Contact Number</th>
-//         <th>Special Note</th>
-//       </tr>
-//       <tr>
-//         <td>${name}</td>
-//         <td>${quantity}</td>
-//         <td>${price}</td>
-//         <td>${total}</td>
-//         <td>${contact}</td>
-//         <td>${note}</td>
-//       </tr>
-      
-//       <!-- Add more rows here for additional items <span style="color:red;">ID : 012231</span> -->
-//     </table>
-   
-   
-//   </body>
-// </html>`;
-
-
-
-
-  // const handleClose = () => {
-  //   navigation.navigate('FoodHome');
-  //   setModalVisible(false);
-  // };
   const increase = () => {
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
