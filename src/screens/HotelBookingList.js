@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 
 function HotelBookingList({ navigation }) {
@@ -10,7 +10,7 @@ function HotelBookingList({ navigation }) {
   }, []);
 
   const fetchHotelBookings = () => {
-    axios.get('http://your-api-url/hotel')
+    axios.get('http://192.168.42.52:3000/hotel')
       .then(response => {
         setHotelBookings(response.data);
       })
@@ -19,19 +19,48 @@ function HotelBookingList({ navigation }) {
       });
   };
 
-  const deleteBooking = (id) => {
-    // Make an HTTP DELETE request to delete the booking by ID
-    axios.delete(`http://192.168.205.78:3000/hotel/${id}`)
-      .then(response => {
-        // Handle success, such as updating the local state or re-fetching data
-        console.log('Booking deleted successfully');
-        fetchHotelBookings();
-      })
-      .catch(error => {
-        // Handle the error, such as displaying an error message
-        console.error('Error deleting booking:', error);
-      });
-  };
+  // const deleteBookin = (id) => {
+  //   // Make an HTTP DELETE request to delete the booking by ID
+  //   axios.delete(`http://192.168.42.52:3000/hotel/${id}`)
+  //     .then(response => {
+  //       // Handle success, such as updating the local state or re-fetching data
+  //       console.log('Booking deleted successfully');
+  //       fetchHotelBookings();
+  //     })
+  //     .catch(error => {
+  //       // Handle the error, such as displaying an error message
+  //       console.error('Error deleting booking:', error);
+  //     });
+  // };
+
+  const deleteBooking = async (id) => {
+    Alert.alert(
+        'Confirm Deletion',
+        'Are you sure you want to delete this package?',
+        [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            {
+                text: 'Delete',
+                onPress: async () => {
+                    await axios.delete(`http://192.168.42.52:3000/hotel/${id}`)
+                        .then(() => {
+                            // Alert.alert("Package Details Deleted Successfully");
+                            fetchHotelBookings();
+                            console.log('Booking deleted successfully');
+                        })
+                        .catch((err) => {
+                            // Alert.alert("Error occurred while deleting the details");
+                            console.error('Error:Error occurred while deleting the details', err);
+                        });
+                },
+            },
+        ]
+    );
+};
+
 
   const printBooking = async (booking) => {
     const html = `
@@ -121,7 +150,7 @@ function HotelBookingList({ navigation }) {
           <Text style={styles.cardText}>Check-Out Date: {booking.checkOutDate}</Text>
 
           <View style={styles.cardButtons}>
-            <TouchableOpacity onPress={() => navigation.navigate('UpdateScreen', { booking })}>
+            <TouchableOpacity onPress={() => navigation.navigate('HotelBooking', { booking })}>
               <Text style={styles.button}>Update</Text>
             </TouchableOpacity>
 

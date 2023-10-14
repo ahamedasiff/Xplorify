@@ -19,11 +19,12 @@ const HotelBooking = ({ route, navigation }) => {
 
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
+  const [hotelName, setHotelName] = useState(hotel.name)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [contactNo, setContactNo] = useState('');
   const [selectedSuite, setSelectedSuite] = useState('Standard Suite'); // Default to 'Standard Suite'
-  const [numberOfPersons, setNumberOfPersons] = useState('');
+  const [noOfPersons, setnoOfPersons] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [bookingDetails, setBookingDetails] = useState({}); // Define bookingDetails state
   const [contactError, setContactError] = useState();
@@ -78,7 +79,7 @@ const HotelBooking = ({ route, navigation }) => {
         <th>Email</th>
         <th>Total Price</th>
         <th>contactNo</th>
-        <th>numberOfPersons</th>
+        <th>noOfPersons</th>
         <th>checkInDate</th>
         <th>checkOutDate</th>
       </tr>
@@ -88,7 +89,7 @@ const HotelBooking = ({ route, navigation }) => {
         <td>${email}</td>
         <td>${contactNo}</td>
         <td>${selectedSuite}</td>
-        <td>${numberOfPersons}</td>
+        <td>${noOfPersons}</td>
         <td>${checkInDate}</td>
         <td>${checkOutDate}</td>
       </tr>
@@ -115,6 +116,18 @@ const HotelBooking = ({ route, navigation }) => {
       setCheckOutDate(nextDay);
     }
   }, [checkInDate]);
+
+  useEffect(() => {
+    if (isUpdate) {
+      // Initialize the input fields with values from the booking object
+      setName(booking.name || ''); // Use the value from the booking object or an empty string if it's undefined
+      setEmail(booking.email || '');
+      setContactNo(booking.contactNo || '');
+      setSelectedSuite(booking.selectedSuite || 'Standard Suite');
+      setnoOfPersons(booking.noOfPersons || '');
+      // You can initialize other fields in a similar way
+    }
+  }, [booking, isUpdate]);
 
   const showCheckInPicker = () => {
     setShowPicker('checkIn');
@@ -191,64 +204,94 @@ const HotelBooking = ({ route, navigation }) => {
     );
 
     // Multiply the price by the number of persons and number of days
-    newPrice *= numberOfPersons * numberOfDays;
+    newPrice *= noOfPersons * numberOfDays;
 
     return newPrice;
   };
 
-  const handleBooking = async () => {
+  const handleBooking = () => {
     if (checkOutDate <= checkInDate) {
       setErrorMessage('Checkout date must be after check-in date');
       return;
     }
   
     if (!name || !email || !contactNo) {
-      setErrorMessage('Please fill in all required details.');
+      alert('Please fill in all required details.');
       return;
     }
   
     const isEmailValid = isEmailFormatValid(email);
   
-    if (!isNameValid || !isEmailValid || !isContactNoValid) {
-      setErrorMessage('Please provide valid information.');
-      return;
-    }
+    // if (!isNameValid || !isEmailValid || !isContactNoValid) {
+    //   setErrorMessage('Please provide valid information.');
+    //   return;
+    // }
   
+    if(errorMessage === ''){
+      sendData();
+      setSuccessMessage('Booking successfully updated!');
+      setIsModalVisible(true);
+    }
+    
+  };
+
+  const sendData = async () => {
+
     const newBookingDetails = {
       hotelName: hotel.name,
       name,
       email,
       contactNo,
       selectedSuite,
-      numberOfPersons,
+      noOfPersons: noOfPersons.toString(),
       checkInDate: checkInDate.toDateString(),
       checkOutDate: checkOutDate.toDateString(),
     };
   
-    setBookingDetails(newBookingDetails);
-  
-    if (booking) {
-      // If the 'booking' prop exists, it's an update
-      try {
-        await axios.put(`http://192.168.205.78:3000/hotel/${booking._id}`, newBookingDetails);
-        console.log('Booking successfully updated');
-        setSuccessMessage('Booking successfully updated!');
-        setIsModalVisible(true);
-      } catch (error) {
-        console.error('Error updating booking:', error);
-      }
-    } else {
-      // If 'booking' prop doesn't exist, it's a new booking
-      try {
-        await axios.post('http://192.168.205.78:3000/hotel', newBookingDetails);
-        console.log('Booking successfully created');
-        setSuccessMessage('Booking successfully added!');
-        setIsModalVisible(true);
-      } catch (error) {
-        console.error('Error Insert booking:', error);
-      }
+    // setBookingDetails(newBookingDetails);
+
+    if(booking){
+      await axios.post("http://192.168.42.52:3000/hotel/${booking._id", newBookingDetails)
+      .then((response) => {
+        console.log('Server Response orderd Successfully:', response.data);
+        alert("Booking Updated");
+        // setName('');
+        setName('');
+        setEmail('');
+        setContactNo('');
+        setSelectedSuite('Standard Suite');
+        setnoOfPersons('');
+        setCheckInDate(new Date());
+        setCheckOutDate(new Date());
+      
+      })
+      .catch((error) => {
+        alert("Update Error")
+        console.error('Update Error:', error);
+      });
+    } else{
+      await axios.post("http://192.168.42.52:3000/hotel", newBookingDetails)
+      .then((response) => {
+        console.log('Server Response Booked Successfully:', response.data);
+        alert("Booking Successful");
+        // setName('');
+        setName('');
+        setEmail('');
+        setContactNo('');
+        setSelectedSuite('Standard Suite');
+        setnoOfPersons('');
+        setCheckInDate(new Date());
+        setCheckOutDate(new Date());
+      
+      })
+      .catch((error) => {
+        alert("Booking Error")
+        console.error('Booking Error:', error);
+      });
     }
-  };
+   
+      
+  }
   
   // const handleBooking = async () => {
     
@@ -279,7 +322,7 @@ const HotelBooking = ({ route, navigation }) => {
   //     email,
   //     contactNo,
   //     selectedSuite,
-  //     numberOfPersons,
+  //     noOfPersons,
   //     checkInDate: checkInDate.toDateString(),
   //     checkOutDate: checkOutDate.toDateString(),
   //     // price: price,
@@ -390,8 +433,8 @@ const HotelBooking = ({ route, navigation }) => {
             style={styles.input}
             placeholder="Enter Number of Persons"
             keyboardType="numeric"
-            value={numberOfPersons.toString()}
-            onChangeText={(text) => setNumberOfPersons(parseInt(text, 10))}
+            value={noOfPersons.toString()}
+            onChangeText={(text) => setnoOfPersons(parseInt(text, 10))}
           />
 
           <View>
