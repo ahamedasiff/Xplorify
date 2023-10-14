@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
+import { shareAsync } from 'expo-sharing';
+import { printToFileAsync } from 'expo-print';
+import { StatusBar } from 'expo-status-bar';
+import COLORS from '../consts/colors';
 
 function HotelBookingList({ navigation }) {
   const [hotelBookings, setHotelBookings] = useState([]);
@@ -19,19 +23,7 @@ function HotelBookingList({ navigation }) {
       });
   };
 
-  // const deleteBookin = (id) => {
-  //   // Make an HTTP DELETE request to delete the booking by ID
-  //   axios.delete(`http://192.168.42.52:3000/hotel/${id}`)
-  //     .then(response => {
-  //       // Handle success, such as updating the local state or re-fetching data
-  //       console.log('Booking deleted successfully');
-  //       fetchHotelBookings();
-  //     })
-  //     .catch(error => {
-  //       // Handle the error, such as displaying an error message
-  //       console.error('Error deleting booking:', error);
-  //     });
-  // };
+ 
 
   const deleteBooking = async (id) => {
     Alert.alert(
@@ -61,84 +53,193 @@ function HotelBookingList({ navigation }) {
     );
 };
 
+const printSingleBooking = async (booking) => {
+  const html = `
+    <!-- Your HTML template for a single booking -->
+    <table>
+      <tr>
+        <th>Food Name</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Total Price</th>
+        <th>contactNo</th>
+        <th>numberOfPersons</th>
+        <th>checkInDate</th>
+        <th>checkOutDate</th>
+      </tr>
+      <tr>
+        <td>${booking.hotelName}</td>
+        <td>${booking.name}</td>
+        <td>${booking.email}</td>
+        <td>${booking.contactNo}</td>
+        <td>${booking.selectedSuite}</td>
+        <td>${booking.noOfPersons}</td>
+        <td>${booking.checkInDate}</td>
+        <td>${booking.checkOutDate}</td>
+      </tr>
+    </table>
+  `;
 
-  const printBooking = async (booking) => {
-    const html = `
-      <html>
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-          <style>
-            table {
-              border-collapse: collapse;
-              width: 100%;
-            }
+  try {
+    const file = await printToFileAsync({
+      html: html,
+      base64: false,
+    });
 
-            th, td {
-              border: 1px solid #dddddd;
-              text-align: left;
-              padding: 8px;
-            }
+    await shareAsync(file.uri);
+  } catch (error) {
+    console.error('Error generating or sharing PDF:', error);
+  }
+};
 
-            tr:nth-child(even) {
-              background-color: #f2f2f2;
-            }
-          </style>
-        </head>
-        <body style="text-align: center;">
-          <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-            Xplorify : Food Pre Order Details</br> 
-          </h1>
-          <table>
-            <tr>
-              <th>Food Name</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Total Price</th>
-              <th>contactNo</th>
-              <th>numberOfPersons</th>
-              <th>checkInDate</th>
-              <th>checkOutDate</th>
-            </tr>
-            <tr>
-              <td>${booking.hotelName}</td>
-              <td>${booking.name}</td>
-              <td>${booking.email}</td>
-              <td>${booking.contactNo}</td>
-              <td>${booking.selectedSuite}</td>
-              <td>${booking.noOfPersons}</td>
-              <td>${booking.checkInDate}</td>
-              <td>${booking.checkOutDate}</td>
-            </tr>
-          </table>
-        </body>
-      </html>`;
 
-    try {
-      const file = await printToFileAsync({
-        html: html,
-        base64: false,
-      });
+const printAll = async () => {
+  const bookingsHTML = hotelBookings.map(booking => `
+    <tr>
+      <td>${booking.hotelName}</td>
+      <td>${booking.name}</td>
+      <td>${booking.email}</td>
+      <td>${booking.contactNo}</td>
+      <td>${booking.selectedSuite}</td>
+      <td>${booking.noOfPersons}</td>
+      <td>${booking.checkInDate}</td>
+      <td>${booking.checkOutDate}</td>
+    </tr>
+  `).join('');
 
-      const shareOptions = {
-        mimeType: 'application/pdf',
-        dialogTitle: 'Share Booking Details',
-        UTI: 'com.adobe.pdf',
-        url: file.uri,
-      };
+  const html = `
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+        <style>
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+        </style>
+      </head>
+      <body style="text-align: center;">
+        <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
+          Xplorify : Food Pre Order Details</br> 
+        </h1>
+        <table>
+          <tr>
+            <th>Food Name</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Total Price</th>
+            <th>contactNo</th>
+            <th>numberOfPersons</th>
+            <th>checkInDate</th>
+            <th>checkOutDate</th>
+          </tr>
+          ${bookingsHTML}
+        </table>
+      </body>
+    </html>`;
 
-      const shared = await shareAsync(shareOptions);
-      if (shared) {
-        console.log('Booking details shared successfully');
-      } else {
-        console.log('Sharing canceled or failed');
-      }
-    } catch (error) {
-      console.error('Error generating or sharing PDF:', error);
-    }
-  };
+  try {
+    const file = await printToFileAsync({
+      html: html,
+      base64: false
+    });
+
+    await shareAsync(file.uri);
+  } catch (error) {
+    console.error('Error generating or sharing PDF:', error);
+  }
+};
+
+  // const printBooking = async (booking) => {
+  //   const html = `
+  //     <html>
+  //       <head>
+  //         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  //         <style>
+  //           table {
+  //             border-collapse: collapse;
+  //             width: 100%;
+  //           }
+
+  //           th, td {
+  //             border: 1px solid #dddddd;
+  //             text-align: left;
+  //             padding: 8px;
+  //           }
+
+  //           tr:nth-child(even) {
+  //             background-color: #f2f2f2;
+  //           }
+  //         </style>
+  //       </head>
+  //       <body style="text-align: center;">
+  //         <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
+  //           Xplorify : Food Pre Order Details</br> 
+  //         </h1>
+  //         <table>
+  //           <tr>
+  //             <th>Food Name</th>
+  //             <th>Name</th>
+  //             <th>Email</th>
+  //             <th>Total Price</th>
+  //             <th>contactNo</th>
+  //             <th>numberOfPersons</th>
+  //             <th>checkInDate</th>
+  //             <th>checkOutDate</th>
+  //           </tr>
+  //           <tr>
+  //             <td>${booking.hotelName}</td>
+  //             <td>${booking.name}</td>
+  //             <td>${booking.email}</td>
+  //             <td>${booking.contactNo}</td>
+  //             <td>${booking.selectedSuite}</td>
+  //             <td>${booking.noOfPersons}</td>
+  //             <td>${booking.checkInDate}</td>
+  //             <td>${booking.checkOutDate}</td>
+  //           </tr>
+  //         </table>
+  //       </body>
+  //     </html>`;
+
+  //   try {
+  //     const file = await printToFileAsync({
+  //       html: html,
+  //       base64: false,
+  //     });
+
+  //     const shareOptions = {
+  //       mimeType: 'application/pdf',
+  //       dialogTitle: 'Share Booking Details',
+  //       UTI: 'com.adobe.pdf',
+  //       url: file.uri,
+  //     };
+
+  //     const shared = await shareAsync(shareOptions);
+  //     if (shared) {
+  //       console.log('Booking details shared successfully');
+  //     } else {
+  //       console.log('Sharing canceled or failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error generating or sharing PDF:', error);
+  //   }
+  // };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
+      <TouchableOpacity onPress={() => printAllBookings()}>
+      <Text style={styles.heading}>Hotel Bookings</Text>
+      <Text style={styles.button}>Print All</Text>
+      </TouchableOpacity>
       {hotelBookings.map(booking => (
         <View key={booking._id} style={styles.card}>
           <Text style={styles.cardText}>Hotel Name: {booking.hotelName}</Text>
@@ -150,7 +251,7 @@ function HotelBookingList({ navigation }) {
           <Text style={styles.cardText}>Check-Out Date: {booking.checkOutDate}</Text>
 
           <View style={styles.cardButtons}>
-            <TouchableOpacity onPress={() => navigation.navigate('HotelBooking', { booking })}>
+            <TouchableOpacity onPress={() => navigation.navigate('UpdateHotelBooking', { booking })}>
               <Text style={styles.button}>Update</Text>
             </TouchableOpacity>
 
@@ -158,7 +259,7 @@ function HotelBookingList({ navigation }) {
               <Text style={styles.button}>Delete</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => printBooking(booking)}>
+            <TouchableOpacity onPress={() => printSingleBooking(booking)}>
               <Text style={styles.button}>Print</Text>
             </TouchableOpacity>
           </View>
@@ -193,9 +294,16 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: '#007bff',
+    backgroundColor: COLORS.primary,
     color: 'white',
     borderRadius: 5,
+    textAlign:'center',
+    fontSize: 18
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 10,
   },
 });
 

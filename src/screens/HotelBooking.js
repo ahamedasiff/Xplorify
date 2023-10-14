@@ -12,14 +12,9 @@ import axios from 'axios';
 
 const HotelBooking = ({ route, navigation }) => {
   const hotel = route.params.hotel;
-  const booking = route.params.booking; 
-  // Passed booking data from the list
-
-  const isUpdate = !!booking; // Determine if it's an update or create
 
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
-  const [hotelName, setHotelName] = useState(hotel.name)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [contactNo, setContactNo] = useState('');
@@ -117,17 +112,6 @@ const HotelBooking = ({ route, navigation }) => {
     }
   }, [checkInDate]);
 
-  useEffect(() => {
-    if (isUpdate) {
-      // Initialize the input fields with values from the booking object
-      setName(booking.name || ''); // Use the value from the booking object or an empty string if it's undefined
-      setEmail(booking.email || '');
-      setContactNo(booking.contactNo || '');
-      setSelectedSuite(booking.selectedSuite || 'Standard Suite');
-      setnoOfPersons(booking.noOfPersons || '');
-      // You can initialize other fields in a similar way
-    }
-  }, [booking, isUpdate]);
 
   const showCheckInPicker = () => {
     setShowPicker('checkIn');
@@ -229,7 +213,7 @@ const HotelBooking = ({ route, navigation }) => {
   
     if(errorMessage === ''){
       sendData();
-      setSuccessMessage('Booking successfully updated!');
+      setSuccessMessage('Booking successfully!');
       setIsModalVisible(true);
     }
     
@@ -248,28 +232,8 @@ const HotelBooking = ({ route, navigation }) => {
       checkOutDate: checkOutDate.toDateString(),
     };
   
-    // setBookingDetails(newBookingDetails);
-
-    if(booking){
-      await axios.post("http://192.168.42.52:3000/hotel/${booking._id", newBookingDetails)
-      .then((response) => {
-        console.log('Server Response orderd Successfully:', response.data);
-        alert("Booking Updated");
-        // setName('');
-        setName('');
-        setEmail('');
-        setContactNo('');
-        setSelectedSuite('Standard Suite');
-        setnoOfPersons('');
-        setCheckInDate(new Date());
-        setCheckOutDate(new Date());
-      
-      })
-      .catch((error) => {
-        alert("Update Error")
-        console.error('Update Error:', error);
-      });
-    } else{
+    
+  
       await axios.post("http://192.168.42.52:3000/hotel", newBookingDetails)
       .then((response) => {
         console.log('Server Response Booked Successfully:', response.data);
@@ -288,80 +252,11 @@ const HotelBooking = ({ route, navigation }) => {
         alert("Booking Error")
         console.error('Booking Error:', error);
       });
-    }
+    
    
       
   }
   
-  // const handleBooking = async () => {
-    
-  //   if (checkOutDate <= checkInDate) {
-  //     setErrorMessage('Checkout date must be after check-in date');
-  //     return;
-  //   }
-
-  //   if (!name || !email || !contactNo) {
-  //     alert('Please fill in Required Details.');
-  //     return;
-  //   }
-
-  //   const isEmailValid = isEmailFormatValid(email);
-    
-  //   if (
-  //     !isNameValid ||
-  //     !isEmailValid ||
-  //     !isContactNoValid
-  //   ) {
-  //     setErrorMessage('Please provide valid information.');
-  //     return;
-  //   }
-
-  //   const bookingDetails = {
-  //     hotelName: hotel.name,
-  //     name,
-  //     email,
-  //     contactNo,
-  //     selectedSuite,
-  //     noOfPersons,
-  //     checkInDate: checkInDate.toDateString(),
-  //     checkOutDate: checkOutDate.toDateString(),
-  //     // price: price,
-  //   };
-
-    
-
-  //   setBookingDetails(bookingDetails);
-
-  //   setSuccessMessage('Booking successfully added!');
-  //   setIsModalVisible(true);;
-
-  //   // await printToFile();
-
-  //   await axios.post("http://10.0.2.2:3000/hotel", bookingDetails)
-  //           .then((response) => {
-  //               console.log('Server Response:', response.data);
-                
-  //           })
-  //           .catch((error) => {
-  //               alert("Registration Error")
-  //               console.error('Error:', error);
-  //           });
-
-  //   // try {
-  //   //   // Send a POST request to your backend
-  //   //   await axios.post('', bookingDetails);
-  //   //   alert('Hotel booked successfully');
-  //   // } catch (error) {
-  //   //   console.error('Error booking hotel:', error);
-  //   //   alert('An error occurred while booking the hotel. Please try again.');
-  //   // }
-
-    
-  // };
-
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
 
   return (
     <ScrollView>
@@ -369,7 +264,7 @@ const HotelBooking = ({ route, navigation }) => {
         <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
         <View style={styles.headingContainer}>
           <Icon name="arrow-back-ios" size={28} color={COLORS.dark} onPress={navigation.goBack} />
-          <Text style={styles.heading}>{isUpdate ? 'Update Booking' : 'New Booking'}</Text>
+          <Text style={styles.heading}>New Booking</Text>
         </View>
         <Text style={styles.hotelDetails}>Hotel Name: {hotel.name}</Text>
         <View>
@@ -483,7 +378,7 @@ const HotelBooking = ({ route, navigation }) => {
           )}
 
         <TouchableOpacity onPress={handleBooking} style={styles.btn}>
-          <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: 'bold' }}>{isUpdate ? 'Update' : 'Book Now'}</Text>
+          <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: 'bold' }}>Book Now</Text>
         </TouchableOpacity>
 
         </View>
