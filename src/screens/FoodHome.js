@@ -17,10 +17,6 @@ import COLORS from '../consts/colors';
 import FoodCard from '../components/FoodCard';
 import TopFoodCard from '../components/TopFoodCard';
 import searchFood from '../consts/searchFood';
-import HomeCompo from '../components/FoodHomeCompo';
-import HotelHomeCompo from '../components/HotelHomeCompo';
-import DestinationHomeCompo from '../components/DestinationHomeCompo';
-
 
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;

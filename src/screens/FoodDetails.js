@@ -43,11 +43,11 @@ const Detail = ({ navigation, route }) => {
       </ImageBackground>
       <View>
         <View style={style.iconContainer}>
-          <Icon name="place" color={COLORS.white} size={28} />
+          <Icon name="place" color={COLORS.white} size={28} onPress={()=>navigation.navigate('UserMap',{ location: item.location })}/>
         </View>
         <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.name}</Text>
-          <Text style={{ fontSize: 12, fontWeight: '400', color: COLORS.grey, marginTop: 5 }}>{item.location}</Text>
+          {/* <Text style={{ fontSize: 12, fontWeight: '400', color: COLORS.grey, marginTop: 5 }}>{item.location}</Text> */}
           <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ flexDirection: "row" }}>

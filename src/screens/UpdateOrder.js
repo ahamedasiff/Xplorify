@@ -42,7 +42,7 @@ const UpdateOrder = (props) => {
 }
 
 const updateData = async (id) => {
-    await axios.put(`http://192.168.205.78:3000/restaurant/${id}`, updatedOrder)
+    await axios.put(`http://172.28.19.152:3000/restaurant/${id}`, updatedOrder)
     .then(() => {       
         // Alert.alert("Package Details Updated Successfully")    
         console.log("Package Details Updated")
@@ -93,7 +93,7 @@ const updateData = async (id) => {
         updateData(key)
     //   sendData();
       // setModalVisible(true);
-      navigation.navigate('OrderedPage')
+      navigation.navigate('FoodHome')
     }
 
 

@@ -4,10 +4,8 @@ import axios from 'axios';
 import { shareAsync } from 'expo-sharing';
 import * as Print from 'expo-print';
 import { useNavigation } from '@react-navigation/native';
-// import { destinationData } from '../constants';
 import searchFoods from '../consts/searchFood';
 import COLORS from '../consts/colors';
-// import { Button } from 'react-native-paper';
 
 const OrderedCard = ({ item, getData }) => {
     let url;
@@ -23,7 +21,7 @@ const OrderedCard = ({ item, getData }) => {
     const deleteData = async (id) => {
         Alert.alert(
             'Confirm Deletion',
-            'Are you sure you want to delete this package?',
+            'Are you sure you want to delete this order?',
             [
                 {
                     text: 'Cancel',
@@ -32,14 +30,14 @@ const OrderedCard = ({ item, getData }) => {
                 {
                     text: 'Delete',
                     onPress: async () => {
-                        await axios.delete(`http://192.168.205.78:3000/restaurant/${id}`)
+                        await axios.delete(`http://172.28.19.152:3000/restaurant/${id}`)
                             .then(() => {
-                                // Alert.alert("Package Details Deleted Successfully");
+                                Alert.alert("Package Details Deleted Successfully");
                                 getData();
                                 console.log("Package Details Deleted");
                             })
                             .catch((err) => {
-                                // Alert.alert("Error occurred while deleting the details");
+                                Alert.alert("Error occurred while deleting the details");
                                 console.error('Error:Error occurred while deleting the details', err);
                             });
                     },
@@ -116,21 +114,17 @@ const OrderedCard = ({ item, getData }) => {
                         <Text style={{ fontSize: 12, fontWeight: 'normal', color: COLORS.grey }}> </Text>
                         <View style ={{flexDirection:'row', justifyContent:'space-around'}}>
                             <Pressable style={styles.btn} onPress={()=>print()} >
-                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>PRINT</Text>
+                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>View</Text>
                             </Pressable>
                             <Pressable style={styles.btn} onPress={()=>share()} >
-                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>SHARE</Text>
+                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>Share</Text>
                             </Pressable>
                             <Pressable style={styles.btn} onPress={()=>navigation.navigate('UpdateOrder',{...item})} >
-                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>EDIT</Text>
+                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>Update</Text>
                             </Pressable>
                             <Pressable style={styles.btn} onPress={()=>deleteData(key)} >
-                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>DELETE</Text>
+                                <Text style={{ color: COLORS.white, fontSize: 15, fontWeight: 'bold', textAlign:'center', paddingTop:5, }}>Delete</Text>
                             </Pressable>
-                            {/* <Button title='print' onPress={()=>print()}/>
-                            <Button title='Share' onPress={()=>share()} />
-                            <Button title='edit' onPress={()=>print()} />
-                            <Button title='delete' onPress={()=>deleteData(key)} /> */}
                         </View>
                         
                     </View>
