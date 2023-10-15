@@ -28,18 +28,18 @@ const Booking = ({ navigation, route }) => {
       note
     }
 
-    await axios.post("http://192.168.205.78:3000/restaurant", newOrder)
+    await axios.post("http://172.28.19.152:3000/restaurant", newOrder)
       .then((response) => {
         console.log('Server Response orderd Successfully:', response.data);
-        // alert("orderd Successfully");
-        // setName('');
+        alert("orderd Successfully");
+        setName(name);
         setContact('');
         setQuantity(0);
         setTotal(price);
         setNote('');
       })
       .catch((error) => {
-        // alert("Oreder Error")
+        alert("Oreder Error")
         console.error('Oreder Error:', error);
       });
   }
@@ -117,11 +117,7 @@ const Booking = ({ navigation, route }) => {
         </View>
         <Text style={styles.foodDetails}>Food Name: {name}</Text>
         <Text style={styles.foodDetails}>Price: {total}</Text>
-        {/* <TextInput
-          style={[styles.input,]}
-          placeholder= {total.toString()}
-          editable={false}
-        /> */}
+       
         <TextInput
           style={[styles.input, { textAlignVertical: 'center' }]}
           placeholder=" Enter Contact Number"
@@ -152,7 +148,6 @@ const Booking = ({ navigation, route }) => {
             <Icon name="minuscircle" size={30} color="black" onPress={decrease} style={{ paddingLeft: 20 }} />
           </View>
         </View>
-        {/* <Button title="Order Now" onPress={() => handleOrderNow()} /> */}
         <TouchableOpacity onPress={() => {handleOrderNow();}} style={styles.btn}>
           <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: 'bold' }}>Order Now</Text>
         </TouchableOpacity>

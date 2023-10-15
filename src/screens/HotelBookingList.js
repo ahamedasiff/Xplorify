@@ -14,7 +14,7 @@ function HotelBookingList({ navigation }) {
   }, []);
 
   const fetchHotelBookings = () => {
-    axios.get('http://192.168.42.52:3000/hotel')
+    axios.get('http://172.28.19.152:3000/hotel')
       .then(response => {
         setHotelBookings(response.data);
       })
@@ -37,7 +37,7 @@ function HotelBookingList({ navigation }) {
             {
                 text: 'Delete',
                 onPress: async () => {
-                    await axios.delete(`http://192.168.42.52:3000/hotel/${id}`)
+                    await axios.delete(`http://172.28.19.152:3000/hotel/${id}`)
                         .then(() => {
                             // Alert.alert("Package Details Deleted Successfully");
                             fetchHotelBookings();
@@ -56,16 +56,19 @@ function HotelBookingList({ navigation }) {
 const printSingleBooking = async (booking) => {
   const html = `
     <!-- Your HTML template for a single booking -->
+    <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
+          Xplorify : Hotel Booking Details</br> 
+        </h1>
     <table>
       <tr>
-        <th>Food Name</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Total Price</th>
-        <th>contactNo</th>
-        <th>numberOfPersons</th>
-        <th>checkInDate</th>
-        <th>checkOutDate</th>
+      <th>Hotel Name/th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Contact No</th>
+      <th>Selected suite</th>
+      <th>No Of Persons</th>
+      <th>Check In Date</th>
+      <th>Check Out Date</th>
       </tr>
       <tr>
         <td>${booking.hotelName}</td>
@@ -128,18 +131,18 @@ const printAll = async () => {
       </head>
       <body style="text-align: center;">
         <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-          Xplorify : Food Pre Order Details</br> 
+          Xplorify : Hotel Booking Details</br> 
         </h1>
         <table>
           <tr>
-            <th>Food Name</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Total Price</th>
-            <th>contactNo</th>
-            <th>numberOfPersons</th>
-            <th>checkInDate</th>
-            <th>checkOutDate</th>
+          <th>Hotel Name/th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Contact No</th>
+          <th>Selected suite</th>
+          <th>No Of Persons</th>
+          <th>Check In Date</th>
+          <th>Check Out Date</th>
           </tr>
           ${bookingsHTML}
         </table>
@@ -158,85 +161,12 @@ const printAll = async () => {
   }
 };
 
-  // const printBooking = async (booking) => {
-  //   const html = `
-  //     <html>
-  //       <head>
-  //         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-  //         <style>
-  //           table {
-  //             border-collapse: collapse;
-  //             width: 100%;
-  //           }
-
-  //           th, td {
-  //             border: 1px solid #dddddd;
-  //             text-align: left;
-  //             padding: 8px;
-  //           }
-
-  //           tr:nth-child(even) {
-  //             background-color: #f2f2f2;
-  //           }
-  //         </style>
-  //       </head>
-  //       <body style="text-align: center;">
-  //         <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-  //           Xplorify : Food Pre Order Details</br> 
-  //         </h1>
-  //         <table>
-  //           <tr>
-  //             <th>Food Name</th>
-  //             <th>Name</th>
-  //             <th>Email</th>
-  //             <th>Total Price</th>
-  //             <th>contactNo</th>
-  //             <th>numberOfPersons</th>
-  //             <th>checkInDate</th>
-  //             <th>checkOutDate</th>
-  //           </tr>
-  //           <tr>
-  //             <td>${booking.hotelName}</td>
-  //             <td>${booking.name}</td>
-  //             <td>${booking.email}</td>
-  //             <td>${booking.contactNo}</td>
-  //             <td>${booking.selectedSuite}</td>
-  //             <td>${booking.noOfPersons}</td>
-  //             <td>${booking.checkInDate}</td>
-  //             <td>${booking.checkOutDate}</td>
-  //           </tr>
-  //         </table>
-  //       </body>
-  //     </html>`;
-
-  //   try {
-  //     const file = await printToFileAsync({
-  //       html: html,
-  //       base64: false,
-  //     });
-
-  //     const shareOptions = {
-  //       mimeType: 'application/pdf',
-  //       dialogTitle: 'Share Booking Details',
-  //       UTI: 'com.adobe.pdf',
-  //       url: file.uri,
-  //     };
-
-  //     const shared = await shareAsync(shareOptions);
-  //     if (shared) {
-  //       console.log('Booking details shared successfully');
-  //     } else {
-  //       console.log('Sharing canceled or failed');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error generating or sharing PDF:', error);
-  //   }
-  // };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
-      <TouchableOpacity onPress={() => printAllBookings()}>
+      <TouchableOpacity onPress={() => printAll()}>
       <Text style={styles.heading}>Hotel Bookings</Text>
       <Text style={styles.button}>Print All</Text>
       </TouchableOpacity>

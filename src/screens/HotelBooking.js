@@ -21,12 +21,11 @@ const HotelBooking = ({ route, navigation }) => {
   const [selectedSuite, setSelectedSuite] = useState('Standard Suite'); // Default to 'Standard Suite'
   const [noOfPersons, setnoOfPersons] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [bookingDetails, setBookingDetails] = useState({}); // Define bookingDetails state
   const [contactError, setContactError] = useState();
   const [isNameValid, setIsNameValid] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isContactNoValid, setIsContactNoValid] = useState(true);
-
+  const [showPicker, setShowPicker] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [nameError, setNameError] = useState('');
@@ -65,18 +64,18 @@ const HotelBooking = ({ route, navigation }) => {
   </head>
   <body style="text-align: center;">
     <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-    Xplorify : Food Pre Order Details</br> 
+    Xplorify : Hotel Booking</br> 
     </h1>
     <table>
       <tr>
-        <th>Food Name</th>
+        <th>Hotel Name/th>
         <th>Name</th>
         <th>Email</th>
-        <th>Total Price</th>
-        <th>contactNo</th>
-        <th>noOfPersons</th>
-        <th>checkInDate</th>
-        <th>checkOutDate</th>
+        <th>Contact No</th>
+        <th>Selected suite</th>
+        <th>No Of Persons</th>
+        <th>Check In Date</th>
+        <th>Check Out Date</th>
       </tr>
       <tr>
         <td>${hotel.name}</td>
@@ -121,9 +120,7 @@ const HotelBooking = ({ route, navigation }) => {
     setShowPicker('checkOut');
   };
 
-  const [showPicker, setShowPicker] = useState(null);
 
-  // Function to validate email format
   const isEmailFormatValid = (email) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailRegex.test(email);
@@ -203,20 +200,14 @@ const HotelBooking = ({ route, navigation }) => {
       alert('Please fill in all required details.');
       return;
     }
-  
-    const isEmailValid = isEmailFormatValid(email);
-  
-    // if (!isNameValid || !isEmailValid || !isContactNoValid) {
-    //   setErrorMessage('Please provide valid information.');
-    //   return;
-    // }
-  
+
+    validateContact();
+    
     if(errorMessage === ''){
       sendData();
       setSuccessMessage('Booking successfully!');
       setIsModalVisible(true);
     }
-    
   };
 
   const sendData = async () => {
@@ -231,32 +222,17 @@ const HotelBooking = ({ route, navigation }) => {
       checkInDate: checkInDate.toDateString(),
       checkOutDate: checkOutDate.toDateString(),
     };
-  
-    
-  
-      await axios.post("http://192.168.42.52:3000/hotel", newBookingDetails)
+
+      await axios.post("http://172.28.19.152:3000/hotel", newBookingDetails)
       .then((response) => {
         console.log('Server Response Booked Successfully:', response.data);
-        alert("Booking Successful");
-        // setName('');
-        setName('');
-        setEmail('');
-        setContactNo('');
-        setSelectedSuite('Standard Suite');
-        setnoOfPersons('');
-        setCheckInDate(new Date());
-        setCheckOutDate(new Date());
-      
+        alert("Booking Successful");      
       })
       .catch((error) => {
         alert("Booking Error")
         console.error('Booking Error:', error);
-      });
-    
-   
-      
+      });      
   }
-  
 
   return (
     <ScrollView>
@@ -278,7 +254,6 @@ const HotelBooking = ({ route, navigation }) => {
           {!isNameValid && (
              <Text style={styles.errorText}>{nameError}</Text>
           )}
-
           <Text style={styles.label}>Enter Email</Text>
           <TextInput
             style={[
@@ -303,7 +278,7 @@ const HotelBooking = ({ route, navigation }) => {
             placeholder="+xx xx xxxx xxxxx"
             value={contactNo}
             onChangeText={handleContactNoChange}
-            onBlur={() => validateContact(contactNo)} // Add this onBlur event handler
+            // onBlur={() => validateContact(contactNo)} // Add this onBlur event handler
             />
           {!isContactNoValid && (
             <Text style={styles.errorText}>{contactNoError}</Text>

@@ -79,7 +79,7 @@ const Detail = ({navigation, route}) => {
           </View>
 
           <View style={{marginTop: 20}}>
-          <Text style={{lineHeight: 20, color: COLORS.grey, fontSize: 16}}>
+          <Text style={{lineHeight: 20, color: COLORS.grey, fontSize: 16, textAlign: 'justify'}}>
               {item.details}
             </Text>
           </View>
