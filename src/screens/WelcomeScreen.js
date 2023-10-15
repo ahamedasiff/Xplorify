@@ -18,6 +18,8 @@ import searchFood from '../consts/searchFood';
 import HomeCompo from '../components/FoodHomeCompo';
 import HotelHomeCompo from '../components/HotelHomeCompo';
 import DestinationHomeCompo from '../components/DestinationHomeCompo';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import blogs from '../consts/blogConstants/blog';
 
 
 const { width } = Dimensions.get('screen');
@@ -72,6 +74,15 @@ const WelcomeScreen = ({ navigation }) => {
                     onChangeText={(text) => handleSearch(text)}
                 />
             </View>
+            {/* ----------------------- Blog page => Started ---------------------------------  */}
+
+            <View style={style.blogButtonCOntainer} >
+                <TouchableOpacity style={style.blogButton} onPress={() => navigation.navigate('BlogHome')}>
+                    <Text style={style.blogBtn}>Visit Blog Page</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* ----------------------- Blog page Closed ---------------------------------  */}
             {searchQuery.trim() ? (
                 <FlatList
                     data={searchResults}
@@ -109,7 +120,7 @@ const style = StyleSheet.create({
         borderBottomLeftRadius: 30,
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 50,
+        marginVertical: 30,
         borderWidth: 1,
 
     },
@@ -167,5 +178,21 @@ const style = StyleSheet.create({
     flatListContainer: {
         paddingBottom: 20,
     },
+    blogButtonCOntainer: {
+        marginBottom: 20,
+        marginLeft: 20,
+        marginRight: 20,
+    },
+    blogButton: {
+        backgroundColor: COLORS.primary,
+        padding: 15,
+        borderRadius: 15,
+        alignItems: 'center'
+    },
+    blogBtn: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold'
+    }
 })
 export default WelcomeScreen;
