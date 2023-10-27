@@ -30,6 +30,8 @@ import UserMap from './src/screens/UserMap';
 import UpdateHotelBooking from './src/screens/UpdateHotelBooking';
 
 const Stack = createStackNavigator();
+
+
 const App = () => {
   return (
     <NavigationContainer>

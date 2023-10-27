@@ -230,37 +230,37 @@ export default function BlogUpdateScreen({ route }) {
           />
         </View> */}
 
-        {/* <Text style={styles.label}>Enter Blogged Place</Text>
+        <Text style={styles.label}>Enter Blogged Place</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Blogged Place"
           value={blogCity}
           onChangeText={handleBlogCityChange}
-        /> */}
+        />
 
-        {/* <Text style={styles.label}>Enter Blogged Country</Text>
+        <Text style={styles.label}>Enter Blogged Country</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Blogged Country"
           value={blogCountry}
           onChangeText={handleBlogCountryChange}
-        /> */}
+        />
 
-        {/* <Text style={styles.label}>Enter Blog Rating</Text>
+        <Text style={styles.label}>Enter Blog Rating</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Blogged Rating"
           value={blogRating}
           onChangeText={handleBlogRatingChange}
-        /> */}
+        />
 
-        {/* <Text style={styles.label}>Enter Blog Details</Text>
+        <Text style={styles.label}>Enter Blog Details</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Blogged Details"
           value={blogDetails}
           onChangeText={handleBlogDetailsChange}
-        /> */}
+        />
 
 
         {/* <View>

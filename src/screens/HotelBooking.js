@@ -223,7 +223,7 @@ const HotelBooking = ({ route, navigation }) => {
       checkOutDate: checkOutDate.toDateString(),
     };
 
-      await axios.post("http://172.28.19.152:3000/hotel", newBookingDetails)
+      await axios.post("http://172.28.19.239:3000/hotel", newBookingDetails)
       .then((response) => {
         console.log('Server Response Booked Successfully:', response.data);
         alert("Booking Successful");      
@@ -277,6 +277,7 @@ const HotelBooking = ({ route, navigation }) => {
             keyboardType="numeric"
             placeholder="+xx xx xxxx xxxxx"
             value={contactNo}
+            maxLength={10}
             onChangeText={handleContactNoChange}
             // onBlur={() => validateContact(contactNo)} // Add this onBlur event handler
             />

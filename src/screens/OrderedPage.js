@@ -10,12 +10,12 @@ const OrederedPage = () => {
     // const [packages, setPackages] = useState([]);
     const [orderFood, setOrderFood] = useState([]);
     const getData = async () => {
-        await axios.get("http://172.28.19.152:3000/restaurant")
+        await axios.get("http://172.28.19.239:3000/restaurant")
             .then((res) => {
                 setOrderFood(res.data);
             })
             .catch((err) => {
-                // Alert.alert("Error occurred while retrieving data")
+                Alert.alert("Error occurred while retrieving data")
                 console.error('Error:', err);
             });
     };

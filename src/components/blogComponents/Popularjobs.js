@@ -23,20 +23,20 @@ export default function Popularjobs({ navigation }) {
 
     const [fetchBlog, setFetchBlog] = useState([]);
 
+    useEffect(() => {
+        getData();
+    }, []);
+
     const getData = async () => {
         await axios.get("http://172.28.19.239:3000/blog")
             .then((res) => {
                 setFetchBlog(res.data);
             })
             .catch((err) => {
-                // Alert.alert("Error occurred while retrieving data")
+                Alert.alert("Error occurred while retrieving data")
                 console.error('Error:', err);
             });
     };
-
-    useEffect(() => {
-        getData();
-    }, []);
 
     return (
         <View style={styles.container}>

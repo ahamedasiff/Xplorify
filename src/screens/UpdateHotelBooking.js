@@ -92,7 +92,7 @@ const UpdateHotelBooking = ({ route, navigation }) => {
         checkOutDate: checkOutDate,
       };
 
-    await axios.put(`http://172.28.19.152:3000/hotel/${id}`, updatedBookingData)
+    await axios.put(`http://172.28.19.239:3000/hotel/${id}`, updatedBookingData)
     .then(() => {       
         Alert.alert("Package Details Updated Successfully")    
         console.log("Package Details Updated")
@@ -149,6 +149,7 @@ const UpdateHotelBooking = ({ route, navigation }) => {
           style={styles.input}
           keyboardType="numeric"
           placeholder="+xx xx xxxx xxxxx"
+          maxLength={10}
           value={contactNo.toString()}
           onChangeText={handleContactNoChange}
         />

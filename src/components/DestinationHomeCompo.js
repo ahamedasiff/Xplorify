@@ -42,8 +42,7 @@ const DestinationHomeCompo = ({ navigation }) => {
             <ScrollView showsHorizontalScrollIndicator={false}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
                     <Text style={{ fontWeight: 'bold', color: COLORS.grey, }}>Destination</Text>
-                    <TouchableOpacity
-                     onPress={() => navigation.navigate('FoodHome')}>
+                    <TouchableOpacity>
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                             <Text style={{ fontWeight: 'bold', color: COLORS.grey, paddingRight: 10 }}>See All</Text>
                             <Icon name="arrow-forward-ios" size={15} color="#908e8c" />

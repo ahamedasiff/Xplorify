@@ -42,9 +42,9 @@ const UpdateOrder = (props) => {
 }
 
 const updateData = async (id) => {
-    await axios.put(`http://172.28.19.152:3000/restaurant/${id}`, updatedOrder)
+    await axios.put(`http://172.28.19.239:3000/restaurant/${id}`, updatedOrder)
     .then(() => {       
-        // Alert.alert("Package Details Updated Successfully")    
+        Alert.alert("Package Details Updated Successfully")    
         console.log("Package Details Updated")
         // setName('');
         setContact('');
@@ -53,7 +53,7 @@ const updateData = async (id) => {
         setNote('');
     })
     .catch((err) => {
-        // Alert.alert("Error occurred while updating the details")
+        Alert.alert("Error occurred while updating the details")
         console.error('Error:Error occurred while updating the details', err);
     })
 } 
@@ -136,6 +136,7 @@ const updateData = async (id) => {
           placeholder=" Enter Contact Number"
           value={contact.toString()}
           onChangeText={(value) => setContact(value)}
+          maxLength={10}
           keyboardType={'phone-pad'}
           onBlur={validateContact}
         />

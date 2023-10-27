@@ -30,7 +30,7 @@ const OrderedCard = ({ item, getData }) => {
                 {
                     text: 'Delete',
                     onPress: async () => {
-                        await axios.delete(`http://172.28.19.152:3000/restaurant/${id}`)
+                        await axios.delete(`http://172.28.19.239:3000/restaurant/${id}`)
                             .then(() => {
                                 Alert.alert("Package Details Deleted Successfully");
                                 getData();

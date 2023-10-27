@@ -28,7 +28,7 @@ const Booking = ({ navigation, route }) => {
       note
     }
 
-    await axios.post("http://172.28.19.152:3000/restaurant", newOrder)
+    await axios.post("http://172.28.19.239:3000/restaurant", newOrder)
       .then((response) => {
         console.log('Server Response orderd Successfully:', response.data);
         alert("orderd Successfully");
@@ -124,6 +124,7 @@ const Booking = ({ navigation, route }) => {
           value={contact}
           onChangeText={(value) => setContact(value)}
           keyboardType={'phone-pad'}
+          maxLength={10}
           onBlur={validateContact}
         />
         {contactError ? <Text style={styles.errorText}>{contactError}</Text> : null}

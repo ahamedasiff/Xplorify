@@ -14,7 +14,7 @@ function HotelBookingList({ navigation }) {
   }, []);
 
   const fetchHotelBookings = () => {
-    axios.get('http://172.28.19.152:3000/hotel')
+    axios.get('http://172.28.19.239:3000/hotel')
       .then(response => {
         setHotelBookings(response.data);
       })
@@ -37,7 +37,7 @@ function HotelBookingList({ navigation }) {
             {
                 text: 'Delete',
                 onPress: async () => {
-                    await axios.delete(`http://172.28.19.152:3000/hotel/${id}`)
+                    await axios.delete(`http://172.28.19.239:3000/hotel/${id}`)
                         .then(() => {
                             // Alert.alert("Package Details Deleted Successfully");
                             fetchHotelBookings();
